@@ -15,8 +15,6 @@
   "dependencies": {
     "@ai-sdk/openai-compatible": "^2.0.4",
     "@ai-sdk/react": "^3.0.29",
-    "@fumadocs/mdx-remote": "workspace:*",
-    "@fumadocs/story": "workspace:*",
     "@mixedbread/sdk": "^0.50.0",
     "@orama/core": "^1.2.16",
     "@orama/orama": "^3.1.18",
@@ -35,11 +33,7 @@
     "estree-util-to-js": "^2.0.0",
     "feed": "^5.1.0",
     "fumadocs-core": "workspace:*",
-    "fumadocs-docgen": "workspace:^",
     "fumadocs-mdx": "workspace:*",
-    "fumadocs-openapi": "workspace:^",
-    "fumadocs-twoslash": "workspace:^",
-    "fumadocs-typescript": "workspace:^",
     "fumadocs-ui": "workspace:*",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "katex": "^0.16.27",
@@ -62,12 +56,10 @@
     "scroll-into-view-if-needed": "^3.1.0",
     "shiki": "^3.21.0",
     "tailwind-merge": "^3.4.0",
-    "twoslash": "^0.3.6",
     "unist-util-visit": "^5.0.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@fumadocs/cli": "workspace:*",
     "@next/bundle-analyzer": "16.1.1",
     "@next/env": "16.1.1",
     "@next/eslint-plugin-next": "16.1.1",
