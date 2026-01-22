@@ -2,5 +2,5 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "exclude": ["node_modules", "dist", "examples", "apps"]
+  "exclude": ["node_modules", "dist", "examples", "apps", ".next", ".turbo", ".pnpm"]
 }

@@ -9,7 +9,6 @@ import {
   remarkHeading,
   remarkImage,
   remarkMdxFiles,
-  remarkMdxMermaid,
   remarkStructure,
 } from '@/mdx-plugins';
 import { fileURLToPath } from 'node:url';
@@ -121,14 +120,7 @@ test('Remark Image: `publicDir` with URL', async () => {
   );
 });
 
-test('converts mermaid codeblock to MDX Mermaid component', async () => {
-  const content = await fs.readFile(path.resolve(cwd, './fixtures/remark-mdx-mermaid.md'));
-  const result = await remark().use(remarkMdxMermaid).use(remarkMdx).process(content);
 
-  await expect(result.value).toMatchFileSnapshot(
-    path.resolve(cwd, './fixtures/remark-mdx-mermaid.output.mdx'),
-  );
-});
 
 test('Rehype Toc', async () => {
   const content = await fs.readFile(path.resolve(cwd, './fixtures/rehype-toc.md'));

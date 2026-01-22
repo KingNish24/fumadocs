@@ -10,7 +10,7 @@
   "license": "MIT",
   "author": "Fuma Nama",
   "repository": "github:fuma-nama/fumadocs",
-  "bin": "./dist/bin.js",
+
   "files": [
     "loader-mdx.cjs",
     "loader-meta.cjs",
@@ -31,10 +31,7 @@
       "import": "./dist/next/index.js",
       "require": "./dist/next/index.cjs"
     },
-    "./vite": {
-      "types": "./dist/vite/index.d.ts",
-      "import": "./dist/vite/index.js"
-    },
+
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
@@ -69,15 +66,14 @@
   "dependencies": {
     "@mdx-js/mdx": "^3.1.1",
     "@standard-schema/spec": "^1.1.0",
-    "chokidar": "^5.0.0",
-    "esbuild": "^0.27.2",
+
     "estree-util-value-to-estree": "^3.5.0",
     "js-yaml": "^4.1.1",
     "mdast-util-to-markdown": "^2.1.2",
     "picocolors": "^1.1.1",
     "picomatch": "^4.0.3",
     "remark-mdx": "^3.1.1",
-    "tinyexec": "^1.0.2",
+
     "tinyglobby": "^0.2.15",
     "unified": "^11.0.5",
     "unist-util-remove-position": "^5.0.0",
@@ -102,18 +98,17 @@
     "remark": "^15.0.1",
     "remark-directive": "^4.0.0",
     "remark-stringify": "^11.0.0",
-    "rollup": "^4.55.1",
+
     "tsconfig": "workspace:*",
-    "tsdown": "^0.19.0",
-    "vite": "^7.3.1",
-    "webpack": "^5.104.1"
+    "tsdown": "^0.19.0"
+
   },
   "peerDependencies": {
     "@types/react": "*",
     "fumadocs-core": "^15.0.0 || ^16.0.0",
     "next": "^15.3.0 || ^16.0.0",
-    "react": "*",
-    "vite": "6.x.x || 7.x.x"
+    "react": "*"
+
   },
   "peerDependenciesMeta": {
     "react": {
@@ -124,9 +119,7 @@
     },
     "next": {
       "optional": true
-    },
-    "vite": {
-      "optional": true
     }
+
   }
 }
