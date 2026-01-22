@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 export default defineConfig({
   format: 'esm',
   target: 'es2023',
-  entry: ['./src/**/*.{ts,tsx}', '!./src/_registry'],
+  entry: ['./src/**/*.{ts,tsx}'],
   fixedExtension: false,
   unbundle: true,
   dts: true,
