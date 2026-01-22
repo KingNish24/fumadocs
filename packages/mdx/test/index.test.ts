@@ -78,65 +78,8 @@ const cases: {
       }),
     },
   },
-  {
-    name: 'async',
-    config: {
-      docs: defineCollections({
-        type: 'doc',
-        dir: path.join(baseDir, './fixtures/generate-index'),
-        async: true,
-      }),
-      blogs: defineCollections({
-        type: 'doc',
-        dir: path.join(baseDir, './fixtures/generate-index'),
-        postprocess: {
-          extractLinkReferences: true,
-        },
-        async: true,
-      }),
-    },
-  },
-  {
-    name: 'dynamic',
-    config: {
-      docs: defineCollections({
-        type: 'doc',
-        dir: path.join(baseDir, './fixtures/generate-index'),
-        dynamic: true,
-      }),
-      blogs: defineCollections({
-        type: 'doc',
-        dir: path.join(baseDir, './fixtures/generate-index'),
-        postprocess: {
-          extractLinkReferences: true,
-        },
-        dynamic: true,
-      }),
-    },
-  },
-  {
-    name: 'workspace',
-    config: {
-      docs: defineCollections({
-        type: 'doc',
-        dir: path.join(baseDir, './fixtures/generate-index'),
-      }),
-      default: defineConfig({
-        workspaces: {
-          test: {
-            dir: path.join(baseDir, './fixtures/generate-index-2'),
-            config: {
-              docs: defineCollections({
-                type: 'doc',
-                dir: '.',
-                async: true,
-              }),
-            },
-          },
-        },
-      }),
-    },
-  },
+
+
 ];
 
 for (const { name, config } of cases) {

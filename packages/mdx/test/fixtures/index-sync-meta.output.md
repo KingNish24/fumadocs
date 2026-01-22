@@ -9,18 +9,7 @@ const create = server<typeof Config, import("fumadocs-mdx/runtime/types").Intern
   }
 }>({"doc":{"passthroughs":["extractedReferences"]}});
 
-export const docs = await create.meta("docs", "packages/mdx/test/fixtures/generate-index", {"meta.json": __fd_glob_0, });
-```
-
-```ts title="dynamic.ts"
-// @ts-nocheck
-import { dynamic } from 'fumadocs-mdx/runtime/dynamic';
-import * as Config from './config';
-
-const create = await dynamic<typeof Config, import("fumadocs-mdx/runtime/types").InternalTypeConfig & {
-  DocData: {
-  }
-}>(Config, {"configPath":"packages/mdx/test/fixtures/config.ts","environment":"test","outDir":"packages/mdx/test/fixtures"}, {"doc":{"passthroughs":["extractedReferences"]}});
+export const docs = await create.meta("docs", "test/fixtures/generate-index", {"meta.json": __fd_glob_0, });
 ```
 
 ```ts title="browser.ts"

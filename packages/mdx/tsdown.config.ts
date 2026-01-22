@@ -1,6 +1,6 @@
 import { defineConfig } from 'tsdown';
 
-const external = ['next', 'typescript', 'bun'];
+const external = ['next', 'typescript', 'bun', 'esbuild'];
 
 const noExternal = [
   // TODO: remove this when the min `fumadocs-core` version is above 16.2.3

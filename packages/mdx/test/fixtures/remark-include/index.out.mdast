@@ -58,12 +58,12 @@
                     "end": {
                       "column": 29,
                       "line": 5,
-                      "offset": 66,
+                      "offset": 70,
                     },
                     "start": {
                       "column": 10,
                       "line": 5,
-                      "offset": 47,
+                      "offset": 51,
                     },
                   },
                   "type": "mdxJsxAttribute",
@@ -198,12 +198,12 @@
                     "end": {
                       "column": 29,
                       "line": 5,
-                      "offset": 66,
+                      "offset": 70,
                     },
                     "start": {
                       "column": 10,
                       "line": 5,
-                      "offset": 47,
+                      "offset": 51,
                     },
                   },
                   "type": "mdxJsxAttribute",
@@ -614,7 +614,8 @@ export function fn() {
           "meta": undefined,
           "position": undefined,
           "type": "code",
-          "value": "console.log('hello world');",
+          "value": "console.log('hello world');
+",
         },
       ],
       "position": undefined,
@@ -658,7 +659,8 @@ export function fn() {
 return function nested() {
   console.log('two');
   console.log('three');
-};",
+};
+",
         },
       ],
       "position": undefined,
@@ -688,7 +690,8 @@ return function nested() {
           "position": undefined,
           "type": "code",
           "value": "return function nested() {
-  console.log('two');",
+  console.log('two');
+",
         },
       ],
       "position": undefined,

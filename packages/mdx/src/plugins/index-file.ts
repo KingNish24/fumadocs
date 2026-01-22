@@ -23,11 +23,6 @@ export interface IndexFilePluginOptions {
    */
   browser?: boolean;
 
-  /**
-   * Generate entry point for dynamic compilation
-   * @defaultValue true
-   */
-  dynamic?: boolean;
 }
 
 export interface IndexFilePlugin {
@@ -48,15 +43,9 @@ interface FileGenContext {
 const indexFileCache = createFSCache();
 
 export default function indexFile(options: IndexFilePluginOptions = {}): Plugin {
-  const { target = 'default', addJsExtension, browser = true, dynamic = true } = options;
-  let dynamicCollections: CollectionItem[];
+  const { target = 'default', addJsExtension, browser = true } = options;
 
-  function isDynamic(collection: CollectionItem) {
-    return (
-      (collection.type === 'docs' && collection.docs.dynamic) ||
-      (collection.type === 'doc' && collection.dynamic)
-    );
-  }
+
 
   function generateConfigs(core: Core): {
     serverOptions: ServerOptions;
@@ -83,32 +72,20 @@ export default function indexFile(options: IndexFilePluginOptions = {}): Plugin 
 
   return {
     name: 'index-file',
-    config() {
-      dynamicCollections = this.core.getCollections().filter(isDynamic);
-    },
+    config() {},
     configureServer(server) {
       if (!server.watcher) return;
 
       server.watcher.on('all', async (event, file) => {
         indexFileCache.delete(file);
 
-        // dynamic collections always require re-generation on change
-        if (dynamicCollections.length === 0) {
-          // vite uses `import.meta.glob`, no need to re-generate
-          if (target === 'vite') return;
-          // only re-generate when adding/deleting entries
-          if (target === 'default' && event === 'change') return;
-        }
-
         const updatedCollection = this.core
           .getCollections()
           .find((collection) => collection.hasFile(file));
 
         if (!updatedCollection) return;
-        if (!isDynamic(updatedCollection)) {
-          if (target === 'vite') return;
-          if (target === 'default' && event === 'change') return;
-        }
+        if (target === 'vite') return;
+        if (target === 'default' && event === 'change') return;
 
         await this.core.emit({
           filterPlugin: (plugin) => plugin.name === 'index-file',
@@ -167,18 +144,6 @@ async function generateServerIndexFile(ctx: FileGenContext) {
 
     switch (collection.type) {
       case 'docs': {
-        if (collection.docs.dynamic) return;
-
-        if (collection.docs.async) {
-          const [metaGlob, headGlob, bodyGlob] = await Promise.all([
-            generateMetaCollectionGlob(ctx, collection.meta, true),
-            generateDocCollectionFrontmatterGlob(ctx, collection.docs, true),
-            generateDocCollectionGlob(ctx, collection.docs),
-          ]);
-
-          return `await create.docsLazy("${collection.name}", "${base}", ${metaGlob}, ${headGlob}, ${bodyGlob})`;
-        }
-
         const [metaGlob, docGlob] = await Promise.all([
           generateMetaCollectionGlob(ctx, collection.meta, true),
           generateDocCollectionGlob(ctx, collection.docs, true),
@@ -187,17 +152,6 @@ async function generateServerIndexFile(ctx: FileGenContext) {
         return `await create.docs("${collection.name}", "${base}", ${metaGlob}, ${docGlob})`;
       }
       case 'doc':
-        if (collection.dynamic) return;
-
-        if (collection.async) {
-          const [headGlob, bodyGlob] = await Promise.all([
-            generateDocCollectionFrontmatterGlob(ctx, collection, true),
-            generateDocCollectionGlob(ctx, collection),
-          ]);
-
-          return `await create.docLazy("${collection.name}", "${base}", ${headGlob}, ${bodyGlob})`;
-        }
-
         return `await create.doc("${collection.name}", "${base}", ${await generateDocCollectionGlob(
           ctx,
           collection,
@@ -234,13 +188,9 @@ async function generateBrowserIndexFile(ctx: FileGenContext) {
   async function generateCollectionObject(collection: CollectionItem): Promise<string | undefined> {
     switch (collection.type) {
       case 'docs': {
-        if (collection.docs.dynamic) return;
-
         return generateCollectionObject(collection.docs);
       }
       case 'doc':
-        if (collection.dynamic) return;
-
         return `create.doc("${collection.name}", ${await generateDocCollectionGlob(ctx, collection)})`;
     }
   }

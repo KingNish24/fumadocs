@@ -42,15 +42,7 @@ export interface DocCollection<
   postprocess?: Partial<PostprocessOptions>;
   mdxOptions?: ProcessorOptions | ((environment: BuildEnvironment) => Promise<ProcessorOptions>);
 
-  /**
-   * Load files with async
-   */
-  async?: boolean;
 
-  /**
-   * Compile files on-demand
-   */
-  dynamic?: boolean;
 
   schema?: CollectionSchema<Schema, { path: string; source: string }>;
 }

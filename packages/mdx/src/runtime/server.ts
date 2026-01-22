@@ -13,14 +13,7 @@ export type DocCollectionEntry<
   TC extends InternalTypeConfig = InternalTypeConfig,
 > = DocData & DocMethods & Frontmatter & TC['DocData'][Name];
 
-export type AsyncDocCollectionEntry<
-  Name extends string = string,
-  Frontmatter = unknown,
-  TC extends InternalTypeConfig = InternalTypeConfig,
-> = {
-  load: () => Promise<DocData & TC['DocData'][Name]>;
-} & DocMethods &
-  Frontmatter;
+
 
 export interface DocsCollectionEntry<
   Name extends string = string,
@@ -36,19 +29,7 @@ export interface DocsCollectionEntry<
   }>;
 }
 
-export interface AsyncDocsCollectionEntry<
-  Name extends string = string,
-  Frontmatter extends PageData = PageData,
-  Meta extends MetaData = MetaData,
-  TC extends InternalTypeConfig = InternalTypeConfig,
-> {
-  docs: AsyncDocCollectionEntry<Name, Frontmatter, TC>[];
-  meta: MetaCollectionEntry<Meta>[];
-  toFumadocsSource: () => Source<{
-    pageData: AsyncDocCollectionEntry<Name, Frontmatter, TC>;
-    metaData: MetaCollectionEntry<Meta>;
-  }>;
-}
+
 
 type AwaitableGlobEntries<T> = Record<string, T | (() => Promise<T>)>;
 
@@ -116,33 +97,7 @@ export function server<Config, TC extends InternalTypeConfig>(options: ServerOpt
         ? DocCollectionEntry<Name, StandardSchemaV1.InferOutput<Schema>, TC>[]
         : never;
     },
-    async docLazy<Name extends keyof Config & string>(
-      _name: Name,
-      base: string,
-      head: AwaitableGlobEntries<unknown>,
-      body: Record<string, () => Promise<unknown>>,
-    ) {
-      const out = await Promise.all(
-        Object.entries(head).map(async ([k, v]) => {
-          const data = typeof v === 'function' ? await v() : v;
-          const content = body[k] as () => Promise<CompiledMDXProperties>;
 
-          return {
-            ...data,
-            ...createDocMethods(fileInfo(k, base), content),
-            async load() {
-              return mapDocData(await content());
-            },
-          } satisfies AsyncDocCollectionEntry;
-        }),
-      );
-
-      return out as unknown as Config[Name] extends
-        | DocCollection<infer Schema>
-        | DocsCollection<infer Schema>
-        ? AsyncDocCollectionEntry<Name, StandardSchemaV1.InferOutput<Schema>, TC>[]
-        : never;
-    },
     async meta<Name extends keyof Config & string>(
       _name: Name,
       base: string,
@@ -193,34 +148,7 @@ export function server<Config, TC extends InternalTypeConfig>(options: ServerOpt
           : never
         : never;
     },
-    async docsLazy<Name extends keyof Config & string>(
-      name: Name,
-      base: string,
-      metaGlob: AwaitableGlobEntries<unknown>,
-      docHeadGlob: AwaitableGlobEntries<unknown>,
-      docBodyGlob: Record<string, () => Promise<unknown>>,
-    ) {
-      const entry = {
-        docs: await this.docLazy(name, base, docHeadGlob, docBodyGlob),
-        meta: await this.meta(name, base, metaGlob),
-        toFumadocsSource() {
-          return toFumadocsSource(this.docs, this.meta);
-        },
-      } satisfies AsyncDocsCollectionEntry;
 
-      return entry as Config[Name] extends DocsCollection<infer Page, infer Meta>
-        ? StandardSchemaV1.InferOutput<Page> extends PageData
-          ? StandardSchemaV1.InferOutput<Meta> extends MetaData
-            ? AsyncDocsCollectionEntry<
-                Name,
-                StandardSchemaV1.InferOutput<Page>,
-                StandardSchemaV1.InferOutput<Meta>,
-                TC
-              >
-            : never
-          : never
-        : never;
-    },
   };
 }
 
