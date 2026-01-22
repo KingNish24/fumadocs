@@ -22,6 +22,4 @@ export const pageSchema = z.object({
   icon: z.string().optional(),
   full: z.boolean().optional(),
 
-  // Fumadocs OpenAPI generated
-  _openapi: z.looseObject({}).optional(),
 });

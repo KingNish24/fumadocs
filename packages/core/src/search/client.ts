@@ -3,10 +3,6 @@ import { useDebounce } from '@/utils/use-debounce';
 import { type FetchOptions } from '@/search/client/fetch';
 import { useOnChange } from '@/utils/use-on-change';
 import { type StaticOptions } from '@/search/client/static';
-import { type AlgoliaOptions } from '@/search/client/algolia';
-import { type OramaCloudOptions } from '@/search/client/orama-cloud';
-import { type OramaCloudLegacyOptions } from '@/search/client/orama-cloud-legacy';
-import { type MixedbreadOptions } from '@/search/client/mixedbread';
 import type { SortedResult } from '@/search';
 
 interface UseDocsSearch {
@@ -25,19 +21,7 @@ export type Client =
     } & FetchOptions)
   | ({
       type: 'static';
-    } & StaticOptions)
-  | ({
-      type: 'algolia';
-    } & AlgoliaOptions)
-  | ({
-      type: 'orama-cloud';
-    } & OramaCloudOptions)
-  | ({
-      type: 'orama-cloud-legacy';
-    } & OramaCloudLegacyOptions)
-  | ({
-      type: 'mixedbread';
-    } & MixedbreadOptions);
+    } & StaticOptions);
 
 function isDeepEqual(a: unknown, b: unknown): boolean {
   if (a === b) return true;
@@ -115,22 +99,6 @@ export function useDocsSearch(
             const { fetchDocs } = await import('./client/fetch');
             return fetchDocs(debouncedValue, client);
           }
-          case 'algolia': {
-            const { searchDocs } = await import('./client/algolia');
-            return searchDocs(debouncedValue, client);
-          }
-          case 'orama-cloud': {
-            const { searchDocs } = await import('./client/orama-cloud');
-            return searchDocs(debouncedValue, client);
-          }
-          case 'orama-cloud-legacy': {
-            const { searchDocs } = await import('./client/orama-cloud-legacy');
-            return searchDocs(debouncedValue, client);
-          }
-          case 'mixedbread': {
-            const { search } = await import('./client/mixedbread');
-            return search(debouncedValue, client);
-          }
           case 'static': {
             const { search } = await import('./client/static');
             return search(debouncedValue, client);
@@ -160,4 +128,4 @@ export function useDocsSearch(
   return { search, setSearch, query: { isLoading, data: results, error } };
 }
 
-export type { OramaCloudOptions, FetchOptions, StaticOptions, AlgoliaOptions };
+export type { FetchOptions, StaticOptions };

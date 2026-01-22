@@ -112,20 +112,6 @@ export function remarkStructure({
     const data: StructuredData = { contents: [], headings: [] };
     let lastHeading: string | undefined;
 
-    // Fumadocs OpenAPI Generated Structured Data
-    if (file.data.frontmatter) {
-      const frontmatter = file.data.frontmatter as {
-        _openapi?: {
-          structuredData?: StructuredData;
-        };
-      };
-
-      if (frontmatter._openapi?.structuredData) {
-        data.headings.push(...frontmatter._openapi.structuredData.headings);
-        data.contents.push(...frontmatter._openapi.structuredData.contents);
-      }
-    }
-
     visit(tree, (element) => {
       if (element.type === 'root' || !types(element)) return;
 
